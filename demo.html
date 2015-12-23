@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<title>移动端下拉刷新演示</title>
+	<style type="text/css" >
+	body, html {
+		margin: 0;
+		padding: 0;
+		height: 100%;
+		width: 100%;
+		background: #F2F2F2;
+	}
+	.wrapper {
+		width: 100%;
+		height: 100%;
+		position: relative;
+	}
+	.wrapper .beforeContainer, .wrapper .afterContainer {
+		width: 100%;
+		height: 25px;
+		position: absolute;
+		left: 0px;
+		line-height: 25px;
+		text-align: center;
+	}
+	.wrapper .beforeContainer {
+		top: -25px;
+		color: gray;
+	}
+	.wrapper .afterContainer {
+		bottom: -25px;
+	}
+	.wrapper ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.wrapper li {
+		line-height: 35px;
+		text-indent: 10px;
+		border-bottom: 1px solid #F5F5F5;
+	}
+	</style>
+</head>
+<body>
+	<div class="wrapper" id="wrapper">
+		<div class="beforeContainer" >
+			下拉刷新
+		</div>
+		<ul class="list">
+		</ul>
+	</div>
+	<script type="text/javascript" src="slider.js" ></script>
+	<script type="text/javascript" >
+		var wrapper = document.getElementsByClassName("wrapper")[0];
+		var wrapperBeforeContainer = wrapper.getElementsByClassName("beforeContainer")[0];
+		var list = wrapper.getElementsByClassName("list")[0];
+		var id = 0;
+		function onSliderStartCallback() {
+			wrapperBeforeContainer.innerHTML = "下拉刷新";
+			return true;
+		}
+		function onSliderEndCallback() {
+			wrapperBeforeContainer.innerHTML = "加载中...";
+			var dataList = getData(10);
+			for(var i=0, len=dataList.length; i<len; i++) {
+				var obj = dataList[i];
+				var li = document.createElement("li");
+				li.innerHTML = obj.text;
+				list.appendChild(li);
+			}
+		}
+		function getData(count) {
+			var data = [];
+			for(var i=0; i<count; i++) {
+				id++;	
+				data.push({
+					id: id,
+					text: "这是第"+id+"条信息"
+				});
+			}
+
+			return data;
+		}
+
+		new Slider({
+			wrapper: wrapper,
+			onSliderStartCallback: onSliderStartCallback,
+			onSliderEndCallback: onSliderEndCallback,
+			maxSliderLength: 100,
+			minSliderLength: 50,
+			sliderBackDuration: 200, // ms
+			delayToSliderBackDuration: 500 //ms
+		});
+	</script>
+</body>
+</html>
